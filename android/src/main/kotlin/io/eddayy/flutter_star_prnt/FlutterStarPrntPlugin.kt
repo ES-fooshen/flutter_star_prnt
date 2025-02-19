@@ -32,16 +32,11 @@ import java.nio.charset.UnsupportedCharsetException
 import android.webkit.URLUtil
 
 public class FlutterStarPrntPlugin : FlutterPlugin, MethodCallHandler {
-    protected var starIoExtManager: StarIoExtManager? = null
-
-    companion object {
-        lateinit var applicationContext: Context
-    }
+    private lateinit var applicationContext: Context
 
     override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
         val messenger = flutterPluginBinding.binaryMessenger
         applicationContext = flutterPluginBinding.applicationContext
-
         val channel = MethodChannel(messenger, "flutter_star_prnt")
         channel.setMethodCallHandler(this)
     }
@@ -184,25 +179,14 @@ public class FlutterStarPrntPlugin : FlutterPlugin, MethodCallHandler {
         val arrayDiscovery: MutableList<PortInfo> = mutableListOf<PortInfo>()
         val arrayPorts: MutableList<Map<String, String>> = mutableListOf<Map<String, String>>()
 
-        if (interfaceName == "Bluetooth" || interfaceName == "All") {
-            for (portInfo in StarIOPort.searchPrinter("BT:")) {
-                arrayDiscovery.add(portInfo)
-            }
+        for (portInfo in StarIOPort.searchPrinter("BT:")) {
+            arrayDiscovery.add(portInfo)
         }
-        if (interfaceName == "LAN" || interfaceName == "All") {
-            for (port in StarIOPort.searchPrinter("TCP:")) {
-                arrayDiscovery.add(port)
-            }
+
+        for (port in StarIOPort.searchPrinter("TCP:")) {
+            arrayDiscovery.add(port)
         }
-        if (interfaceName == "USB" || interfaceName == "All") {
-            try {
-                for (port in StarIOPort.searchPrinter("USB:", applicationContext)) {
-                    arrayDiscovery.add(port)
-                }
-            } catch (e: Exception) {
-                Log.e("FlutterStarPrnt", "usb not conncted", e)
-            }
-        }
+
         for (discovery in arrayDiscovery) {
             val port: MutableMap<String, String> = mutableMapOf<String, String>()
 
