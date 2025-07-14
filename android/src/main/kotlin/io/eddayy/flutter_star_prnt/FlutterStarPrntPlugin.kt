@@ -179,12 +179,32 @@ public class FlutterStarPrntPlugin : FlutterPlugin, MethodCallHandler {
         val arrayDiscovery: MutableList<PortInfo> = mutableListOf<PortInfo>()
         val arrayPorts: MutableList<Map<String, String>> = mutableListOf<Map<String, String>>()
 
-        for (portInfo in StarIOPort.searchPrinter("BT:")) {
-            arrayDiscovery.add(portInfo)
-        }
-
-        for (port in StarIOPort.searchPrinter("TCP:")) {
-            arrayDiscovery.add(port)
+        if (interfaceName == "Bluetooth") {
+            // Only search for Bluetooth printers
+            for (portInfo in StarIOPort.searchPrinter("BT:")) {
+                arrayDiscovery.add(portInfo)
+            }
+        } else if (interfaceName == "LAN") {
+            // Only search for LAN (TCP) printers
+            for (port in StarIOPort.searchPrinter("TCP:")) {
+                arrayDiscovery.add(port)
+            }
+        } else if (interfaceName == "USB") {
+            // Only search for USB printers
+            for (port in StarIOPort.searchPrinter("USB:")) {
+                arrayDiscovery.add(port)
+            }
+        } else if (interfaceName == "All") {
+            // Search for all types
+            for (portInfo in StarIOPort.searchPrinter("BT:")) {
+                arrayDiscovery.add(portInfo)
+            }
+            for (port in StarIOPort.searchPrinter("TCP:")) {
+                arrayDiscovery.add(port)
+            }
+            for (port in StarIOPort.searchPrinter("USB:")) {
+                arrayDiscovery.add(port)
+            }
         }
 
         for (discovery in arrayDiscovery) {
