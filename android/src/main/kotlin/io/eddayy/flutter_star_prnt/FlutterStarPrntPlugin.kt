@@ -191,9 +191,13 @@ public class FlutterStarPrntPlugin : FlutterPlugin, MethodCallHandler {
             }
         } else if (interfaceName == "USB") {
             // Only search for USB printers
-            for (port in StarIOPort.searchPrinter("USB:")) {
-                arrayDiscovery.add(port)
-            }
+//            try {
+//                for (port in StarIOPort.searchPrinter("USB:", applicationContext)) {
+//                    arrayDiscovery.add(port)
+//                }
+//            } catch (e: Exception) {
+//                Log.e("FlutterStarPrnt", "usb not conncted", e)
+//            }
         } else if (interfaceName == "All") {
             // Search for all types
             for (portInfo in StarIOPort.searchPrinter("BT:")) {
@@ -202,9 +206,13 @@ public class FlutterStarPrntPlugin : FlutterPlugin, MethodCallHandler {
             for (port in StarIOPort.searchPrinter("TCP:")) {
                 arrayDiscovery.add(port)
             }
-            for (port in StarIOPort.searchPrinter("USB:")) {
-                arrayDiscovery.add(port)
-            }
+//            try {
+//                for (port in StarIOPort.searchPrinter("USB:", applicationContext)) {
+//                    arrayDiscovery.add(port)
+//                }
+//            } catch (e: Exception) {
+//                Log.e("FlutterStarPrnt", "usb not conncted", e)
+//            }
         }
 
         for (discovery in arrayDiscovery) {
